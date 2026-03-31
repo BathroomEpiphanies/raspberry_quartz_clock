@@ -1,0 +1,6 @@
+Package: PKGNAME
+Version: VERSION
+Architecture: ARCH
+Depends: 
+Maintainer: Fredrik Atmer
+Description: python controller for raspberry pi clock driver board.
