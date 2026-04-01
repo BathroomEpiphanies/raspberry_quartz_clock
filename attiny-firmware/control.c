@@ -37,7 +37,7 @@ void set_run_mode(uint8_t mode) {
     switch (mode) {
     case 1:
         _clock_freq = 1;
-        _duty_cycle = 16;
+        _duty_cycle = 15;
         count_prescaler = 32;
         sync_prescaler = 8;
         break;
