@@ -35,18 +35,26 @@ class ClockController:
     def reset(
             self,
     ):
+        print('resetting controller')
         self.connection.write_string('reset')
+    
+    def version(
+            self,
+    ):
+        print('asking controller for version')
+        self.connection.write_string('version')
     
     def set_mode(
             self,
             mode:int,
     ) -> None:
+        print(f'setting mode to: {mode}')
         self.connection.write_string(f'mode:{mode}')
     
     def start_clock(
             self,
     ) -> None:
-        print('running the clock')
+        print('starting the clock')
         self.connection.write_string('start')
     
     def stop_clock(
@@ -71,7 +79,7 @@ class ClockController:
             self,
             second:int,
     ) -> None:
-        print(f'setting second to {second}')
+        print(f'setting time to: {second} seconds')
         self.connection.write_string(f'time:{second}')
     
     def get_split(
@@ -95,7 +103,16 @@ class ClockController:
     def run(
             self,
     ) -> None:
-        # self.reset()
+        self.reset()
+        while True:
+            try:
+                self.version()
+                version = self.connection.read_string()
+                print(f'got version: {version}')
+                break
+            except UnicodeDecodeError:
+                pass
+        
         startstamp = (3600*self.startstamp.hour + 60*self.startstamp.minute + self.startstamp.second)%SECONDS_IN_12H
         self.set_time(startstamp)
         while True:
