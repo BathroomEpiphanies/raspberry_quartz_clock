@@ -57,8 +57,8 @@ apt install .build/clock-controller-*.deb
 ## Usage
 Start the read and send scripts. Start them in side by side tmux panes for a smooth experience.
 ```bash
-python3 /usr/share/clock-controller/uart_send.py /dev/ttyAMA0
-python3 /usr/share/clock-controller/uart_read.py /dev/ttyAMA0
+python3 /usr/share/clock-controller/uart_send.py /dev/serial0
+python3 /usr/share/clock-controller/uart_read.py /dev/serial0
 ```
 
 ### UART commands
