@@ -14,6 +14,7 @@ class ClockController:
     
     connection:UARTConnection
     startstamp:datetime
+    mode:int
     period:int
     duty_cycle:int
     
@@ -21,15 +22,28 @@ class ClockController:
             self,
             connection:UARTConnection,
             datestamp:datetime,
+            mode:int = 16,
             period:int = 3255,
             duty_cycle:int = 127,
     ) -> None:
         self.connection = connection
         self.startstamp = datestamp
+        self.mode = mode
         self.period = period
         self.duty_cycle = duty_cycle
-
-    def run_clock(
+    
+    def reset(
+            self,
+    ):
+        self.connection.write_string('reset')
+    
+    def set_mode(
+            self,
+            mode:int,
+    ) -> None:
+        self.connection.write_string(f'mode:{mode}')
+    
+    def start_clock(
             self,
     ) -> None:
         print('running the clock')
@@ -81,6 +95,7 @@ class ClockController:
     def run(
             self,
     ) -> None:
+        # self.reset()
         startstamp = (3600*self.startstamp.hour + 60*self.startstamp.minute + self.startstamp.second)%SECONDS_IN_12H
         self.set_time(startstamp)
         while True:
@@ -88,9 +103,10 @@ class ClockController:
             duty_cycle:int = self.duty_cycle
             fudged_period:float = period
             
+            self.set_mode(self.mode)
             self.set_period(period)
             self.set_duty_cycle(duty_cycle)
-            self.run_clock()
+            self.start_clock()
             
             datestamp,timestamp,split,error = self.get_split()
             while True:

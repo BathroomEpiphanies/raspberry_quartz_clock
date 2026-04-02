@@ -20,6 +20,12 @@ def main():
         help = 'Serial port.'
     )
     parser.add_argument(
+        '--mode',
+        type = int,
+        default = 16,
+        help = 'Clock mode 1Hz or 16Hz [1,16].'
+    )
+    parser.add_argument(
         '--period',
         type = int,
         default = 3255,
@@ -32,19 +38,9 @@ def main():
         help = 'Output duty cycle [0-255].'
     )
     parser.add_argument(
-        '--stop-clock',
-        action = 'store_true',
-        help = 'Stop the clock.'
-    )
-    parser.add_argument(
         '--initiate-clock',
         type = str,
         help = 'Initiate the clock to the current clock face [HH:MM:SS].'
-    )
-    parser.add_argument(
-        '--debug',
-        action = 'store_true',
-        help = 'Print debug information.'
     )
     args = parser.parse_args()
     
@@ -57,18 +53,15 @@ def main():
     controller = ClockController(
         connection = connection,
         datestamp = datestamp,
+        mode = args.mode,
         period = args.period,
         duty_cycle = args.duty_cycle,
     )
     
-    if args.stop_clock:
-        controller.stop_clock()
-        exit()
-    
     while True:
         try:
             connection.connect()
-            controller.run_clock()
+            controller.run()
         except KeyboardInterrupt:
             controller.stop_clock()
             sys.exit(0)
