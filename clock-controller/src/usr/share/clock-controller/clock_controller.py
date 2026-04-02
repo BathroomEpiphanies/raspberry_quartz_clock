@@ -45,20 +45,20 @@ class ClockController:
             self,
             period:int,
     ) -> None:
-        self.connection.write_string(f'period{period}')
+        self.connection.write_string(f'period:{period}')
     
     def set_duty_cycle(
             self,
             duty_cycle:int,
     ) -> None:
-        self.connection.write_string(f'duty{duty_cycle}')
+        self.connection.write_string(f'duty:{duty_cycle}')
     
     def set_time(
             self,
             second:int,
     ) -> None:
         print(f'setting second to {second}')
-        self.connection.write_string(f'time{second}')
+        self.connection.write_string(f'time:{second}')
     
     def get_split(
             self,
